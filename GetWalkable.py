@@ -23,5 +23,9 @@ for r in range(0, height, 10):
             for col in range(c, c+10):
                 if ((imgArray[row][col] != (255,255,255,255)).any()):   # any tiles in chunk are non-white
                     walkable[row//10][col//10] = 0
+                    break
+            else:
+                continue
+            break
 
 printArray(walkable)
