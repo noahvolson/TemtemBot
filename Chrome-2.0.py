@@ -81,14 +81,14 @@ printArray(weightedMap)
 
 #---------------- TODO end -----------------
 # try: (40,33), (40,45)
-path = astar(weightedMap, (0,0), (0,4))
+path = astar(weightedMap, (0,0), (1,3)) # NOTE THIS IS IN FORM: (y,x)
 printArray(path)
 
 img = Image.open("BlackSquares.png")
 draw = ImageDraw.Draw(img)
 for tile in path:
-    xCoord = tile[0] * 10
-    yCoord = tile[1] * 10
+    xCoord = tile[1] * 10
+    yCoord = tile[0] * 10
     draw.rectangle([(xCoord,yCoord),((xCoord+10),(yCoord+10))],fill=None,outline="red")
 
 img.show()
