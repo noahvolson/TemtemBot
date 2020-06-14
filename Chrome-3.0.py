@@ -27,13 +27,13 @@ def imgToWalkable(img, tolerance):
 
     for r in range(0, height, 10):
         for c in range(0, width, 10):
-            blackCount = 0
+            blackPix = 0 # number of black pixels in a chunk
             for row in range(r, r+10):
                 for col in range(c, c+10):
                     if ((imgArray[row][col] != (255,255,255,255)).any()):   # pixels in chunk are non-white
-                        blackCount = blackCount + 1
+                        blackPix = blackPix + 1
 
-                    if (blackCount > tolerance):
+                    if (blackPix > tolerance):
                         walkable[row//10][col//10] = 0
                         break # if exceed tolerance, whole chunk invalid
                 else:
@@ -42,6 +42,17 @@ def imgToWalkable(img, tolerance):
             
     return walkable
 
+def tupleToKey(r,c):
+    return {
+        (1,0): ['w'],
+        (1,1): ['w','a'],
+        (0,1): ['a'],
+        (-1,1): ['a','s'],
+        (-1,0): ['s'],
+        (-1,-1): ['s','d'],
+        (0,-1): ['d'],
+        (1,-1): ['d','w'],
+    }[r,c]
 
 frame = cv2.imread("Saipark.png")
 hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -78,9 +89,18 @@ sumArrays(water, weightedMap, weightedMap)
 # test1: (33,40), (45,40)
 # test2: (17,74), (24,66)
 # test3: (17,74), (61,21)
-path = astar(weightedMap, (17,74), (61,21)) # NOTE THIS IS IN FORM: (y,x)
-printArray(path)
+path = astar(weightedMap, (33,40), (45,40)) # NOTE THIS IS IN FORM: (y,x)
+#printArray(path)
 
+# convert path into a set of key presses
+transformations = []
+for i in range(len(path) - 1):
+    #print((path[i][0] - path[i+1][0], path[i][1] - path[i+1][1]))
+    transformations.append(tupleToKey(path[i][0] - path[i+1][0], path[i][1] - path[i+1][1]))
+#printArray(transformations)
+
+
+#DISPLAY PATH
 img = Image.open("Saipark.png")
 draw = ImageDraw.Draw(img)
 for tile in path:
@@ -90,6 +110,10 @@ for tile in path:
 
 img.show()
 
+
+
+
+'''
 img = Image.open("Saipark.png")
 draw = ImageDraw.Draw(img)
 for r in range(0, height):
@@ -114,4 +138,4 @@ for r in range(0, height):
         yCoord = r * 10
         draw.rectangle([(xCoord,yCoord),((xCoord+10),(yCoord+10))],fill=None,outline=color)
 img.show()
-
+'''
