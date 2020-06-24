@@ -114,7 +114,8 @@ except:
 # test1: (33,40), (45,40)
 # test2: (17,74), (24,66)
 # test3: (17,74), (61,21)
-path = astar(mapData, (17,74), (61,21)) # NOTE THIS IS IN FORM: (y,x)
+# test4: (17,74), (29,13)
+path = astar(mapData, (17,74), (29,13)) # NOTE THIS IS IN FORM: (y,x)
 #printArray(path)
 
 # convert path into a set of key presses
