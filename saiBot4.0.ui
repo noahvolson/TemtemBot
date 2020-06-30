@@ -106,7 +106,7 @@ border: 3px solid rgb(27, 28, 27);
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>Undo.png</normaloff>Undo.png</iconset>
+       <normaloff>assets/Undo.png</normaloff>assets/Undo.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -138,7 +138,7 @@ border: 3px solid rgb(27, 28, 27);
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>Redo.png</normaloff>Redo.png</iconset>
+       <normaloff>assets/Redo.png</normaloff>assets/Redo.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -164,7 +164,7 @@ border: 3px solid rgb(27, 28, 27);
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>walk.png</normaloff>walk.png</iconset>
+       <normaloff>assets/walk.png</normaloff>assets/walk.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -190,7 +190,7 @@ border: 3px solid rgb(27, 28, 27);
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>grass.png</normaloff>grass.png</iconset>
+       <normaloff>assets/grass.png</normaloff>assets/grass.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -395,7 +395,7 @@ border: 3px solid rgb(27, 28, 27);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>hidody.png</pixmap>
+      <pixmap>assets/hidody.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -417,7 +417,7 @@ border: 3px solid rgb(27, 28, 27);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>lumaStar.png</pixmap>
+      <pixmap>assets/lumaStar.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -439,7 +439,7 @@ border: 3px solid rgb(27, 28, 27);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>lumaStar.png</pixmap>
+      <pixmap>assets/lumaStar.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
