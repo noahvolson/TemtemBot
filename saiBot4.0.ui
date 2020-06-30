@@ -23,31 +23,6 @@
    <string notr="true">background-color: rgb(248, 248, 248)</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="map">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>871</width>
-      <height>831</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>CrossCursor</cursorShape>
-    </property>
-    <property name="mouseTracking">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>Saipark - Copy.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
@@ -77,6 +52,22 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
+    <widget class="QGraphicsView" name="mapView">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>871</width>
+       <height>831</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+    </widget>
    </widget>
    <widget class="QFrame" name="frame_2">
     <property name="geometry">
@@ -98,35 +89,7 @@ border: 3px solid rgb(27, 28, 27);
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="redoButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Redo</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(223, 223, 223)</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap>../../../Downloads/Redo.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="undoButton">
+    <widget class="QPushButton" name="undoButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -138,23 +101,53 @@ border: 3px solid rgb(27, 28, 27);
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
-     <property name="toolTip">
-      <string>Undo</string>
+     <property name="text">
+      <string/>
      </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(223, 223, 223);</string>
+     <property name="icon">
+      <iconset>
+       <normaloff>Undo.png</normaloff>Undo.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>26</width>
+       <height>26</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="redoButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="text">
       <string/>
      </property>
-     <property name="pixmap">
-      <pixmap>../../../Downloads/Undo.png</pixmap>
+     <property name="icon">
+      <iconset>
+       <normaloff>Redo.png</normaloff>Redo.png</iconset>
      </property>
-     <property name="scaledContents">
-      <bool>true</bool>
+     <property name="iconSize">
+      <size>
+       <width>26</width>
+       <height>26</height>
+      </size>
      </property>
     </widget>
-    <widget class="QLabel" name="walkButton">
+    <widget class="QPushButton" name="walkButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -166,23 +159,21 @@ border: 3px solid rgb(27, 28, 27);
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
-     <property name="toolTip">
-      <string>Show Walkable</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(223, 223, 223)</string>
-     </property>
      <property name="text">
       <string/>
      </property>
-     <property name="pixmap">
-      <pixmap>../../../Downloads/walk.png</pixmap>
+     <property name="icon">
+      <iconset>
+       <normaloff>walk.png</normaloff>walk.png</iconset>
      </property>
-     <property name="scaledContents">
-      <bool>true</bool>
+     <property name="iconSize">
+      <size>
+       <width>26</width>
+       <height>24</height>
+      </size>
      </property>
     </widget>
-    <widget class="QLabel" name="grassButton">
+    <widget class="QPushButton" name="grassButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -194,20 +185,18 @@ border: 3px solid rgb(27, 28, 27);
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
-     <property name="toolTip">
-      <string>Show Grass/Water</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(223, 223, 223)</string>
-     </property>
      <property name="text">
       <string/>
      </property>
-     <property name="pixmap">
-      <pixmap>../../../Downloads/grass.png</pixmap>
+     <property name="icon">
+      <iconset>
+       <normaloff>grass.png</normaloff>grass.png</iconset>
      </property>
-     <property name="scaledContents">
-      <bool>true</bool>
+     <property name="iconSize">
+      <size>
+       <width>23</width>
+       <height>23</height>
+      </size>
      </property>
     </widget>
    </widget>
@@ -332,11 +321,17 @@ border: 3px solid rgb(27, 28, 27);
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
      <property name="styleSheet">
       <string notr="true">color:white;background-color: #4CAF50;border: None; border-radius:4px;</string>
      </property>
      <property name="text">
       <string>Run</string>
+     </property>
+     <property name="default">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QLabel" name="label">
@@ -400,7 +395,7 @@ border: 3px solid rgb(27, 28, 27);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../../Downloads/hidody.png</pixmap>
+      <pixmap>hidody.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -422,7 +417,7 @@ border: 3px solid rgb(27, 28, 27);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../../Downloads/lumaIcon.png</pixmap>
+      <pixmap>lumaStar.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -444,7 +439,7 @@ border: 3px solid rgb(27, 28, 27);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../../Downloads/lumaIcon.png</pixmap>
+      <pixmap>lumaStar.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -453,7 +448,6 @@ border: 3px solid rgb(27, 28, 27);
    </widget>
    <zorder>frame_3</zorder>
    <zorder>frame</zorder>
-   <zorder>map</zorder>
    <zorder>frame_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">

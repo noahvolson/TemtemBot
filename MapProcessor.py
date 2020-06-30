@@ -5,10 +5,6 @@ import time
 from PIL import Image, ImageDraw
 from Astar import *
 
-def printArray(array):
-    for row in array:
-        print(row)
-
 def sumArrays(arr1, arr2, dest):
     for i in range(len(arr1)):    
         for j in range(len(arr1[0])): 
@@ -114,80 +110,3 @@ def initWalkable():
     sumArrays(water, weightedMap, weightedMap)
 
     return weightedMap
-
-pyautogui.PAUSE = 0
-pyautogui.FAILSAFE = False
-
-try:
-    mapData = np.loadtxt('mapData.csv', delimiter=',')
-except:
-    mapData = initWalkable()
-    np.savetxt('mapData.csv', mapData, delimiter=',')
-
-# test1: (33,40), (45,40)
-# test2: (17,74), (24,66)
-# test3: (17,74), (61,21)
-# test4: (17,74), (29,13)
-path = astar(mapData, (17,74), (29,13)) # NOTE THIS IS IN FORM: (y,x)
-#printArray(path)
-
-#DISPLAY PATH
-img = Image.open("Saipark.png")
-draw = ImageDraw.Draw(img)
-for tile in path:
-    xCoord = tile[1] * 10
-    yCoord = tile[0] * 10
-    draw.rectangle([(xCoord,yCoord),((xCoord+10),(yCoord+10))],fill=None,outline="red")
-
-img.show()
-
-
-
-keyPresses = pathToKeyPresses(path)
-'''
-# WALK PATH
-print("Waiting for input:")
-input()
-time.sleep(3)
-
-for keyPress in keyPresses:
-    pyautogui.keyDown(keyPress[0])
-    pyautogui.keyDown(keyPress[1])
-    if keyPress[1]:
-        time.sleep(0.215) # it takes longer to walk diagonally
-    else:
-        time.sleep(0.1667)
-    pyautogui.keyUp(keyPress[1])
-    pyautogui.keyUp(keyPress[0])
-'''
-
-'''
-#PRINT WALKABLE AREAS
-height = len(mapData)
-width = len(mapData[0])
-
-img = Image.open("Saipark.png")
-draw = ImageDraw.Draw(img)
-for r in range(0, height):
-    for c in range(0, width):
-        if mapData[r][c] == 0:
-            continue
-        elif mapData[r][c] == 1:
-            color = "gray"
-        #elif weightedMap[r][c] == 2:
-        #    color = "red"
-        xCoord = c * 10
-        yCoord = r * 10
-        draw.rectangle([(xCoord,yCoord),((xCoord+10),(yCoord+10))],fill=None,outline=color)
-
-for r in range(0, height):
-    for c in range(0, width):
-        if mapData[r][c] == 2:
-            color = "red"
-        else:
-            continue
-        xCoord = c * 10
-        yCoord = r * 10
-        draw.rectangle([(xCoord,yCoord),((xCoord+10),(yCoord+10))],fill=None,outline=color)
-img.show()
-'''
