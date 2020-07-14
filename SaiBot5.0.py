@@ -5,7 +5,35 @@ from PyQt5 import QtGui as qtg
 from MapProcessor import *
 from Astar import *
 
-class SaiBotWindow(qtw.QMainWindow, Ui_MainWindow):
+
+class GraphicsScene(qtw.QGraphicsScene):
+    def __init__(self, parent=None):
+        qtw.QGraphicsScene.__init__(self, parent)
+
+        # for redraw and destination storage
+        self.selected = []
+        
+    def mousePressEvent(self, event):
+
+        yellowPen = qtg.QPen(qtc.Qt.yellow)
+        yellowPen.setWidth(1)
+
+        x = (event.scenePos().x() // 10) * 10
+        y = (event.scenePos().y() // 10) * 10
+
+        self.selected.append((x, y))
+        self.addRect(x,y,10,10,yellowPen)
+
+    def redrawSelected(self):
+
+        yellowPen = qtg.QPen(qtc.Qt.yellow)
+        yellowPen.setWidth(1)
+        
+        for point in self.selected:
+            self.addRect(point[0],point[1],10,10,yellowPen)
+        
+
+class MainWindow(qtw.QMainWindow, Ui_MainWindow):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -18,7 +46,7 @@ class SaiBotWindow(qtw.QMainWindow, Ui_MainWindow):
         self.grassButton.clicked.connect(lambda: self.grassClicked())
         self.runButton.clicked.connect(lambda: self.runClicked())
 
-        # Only generate walkable data if it doesn't exist
+        # only generate walkable data if it doesn't exist
         try:
             self.mapData = np.loadtxt('mapData.csv', delimiter=',')
         except:
@@ -28,6 +56,8 @@ class SaiBotWindow(qtw.QMainWindow, Ui_MainWindow):
         # button pressed status
         self.walkToggle = False
         self.grassToggle = False
+        self.mapScene = GraphicsScene(self)
+        self.mapView.setScene(self.mapScene)
 
     def mapClicked(self):
         print("Clicked map at: ")
@@ -39,27 +69,32 @@ class SaiBotWindow(qtw.QMainWindow, Ui_MainWindow):
         print("REDO Clicked")
 
     def walkClicked(self):
-        scene = qtw.QGraphicsScene()
 
-        if not self.walkToggle:
-            scene = self.__drawWalkable(scene)
+        if self.walkToggle:
+            self.mapScene.clear()
+        else:
+            self.__drawWalkable(self.mapScene)
 
         if self.grassToggle:
-            scene = self.__drawEncounters(scene)
-            
-        self.mapView.setScene(scene)
+            self.__drawEncounters(self.mapScene)
+        
+        self.mapScene.update()
+        self.mapScene.redrawSelected()
         self.walkToggle = not self.walkToggle
 
     def grassClicked(self):
-        scene = qtw.QGraphicsScene()
 
+        if self.grassToggle:
+            self.mapScene.clear()
+        
         if self.walkToggle:
-            scene = self.__drawWalkable(scene)
+            self.__drawWalkable(self.mapScene)
 
         if not self.grassToggle:
-            scene = self.__drawEncounters(scene)
+            self.__drawEncounters(self.mapScene)
                     
-        self.mapView.setScene(scene)
+        self.mapScene.update()
+        self.mapScene.redrawSelected()
         self.grassToggle = not self.grassToggle
 
     def runClicked(self):
@@ -78,7 +113,6 @@ class SaiBotWindow(qtw.QMainWindow, Ui_MainWindow):
                     xCoord = c * 10
                     yCoord = r * 10
                     scene.addRect(xCoord,yCoord,10,10,grayPen)
-        return scene
 
     def __drawEncounters(self, scene):
         redPen = qtg.QPen(qtc.Qt.red)
@@ -93,14 +127,13 @@ class SaiBotWindow(qtw.QMainWindow, Ui_MainWindow):
                     xCoord = c * 10
                     yCoord = r * 10
                     scene.addRect(xCoord,yCoord,10,10,redPen)
-        return scene
 
 
 if __name__ == "__main__":
 
     app = qtw.QApplication([])
 
-    mainWindow = SaiBotWindow()
+    mainWindow = MainWindow()
     mainWindow.show()
     
     app.exec_()

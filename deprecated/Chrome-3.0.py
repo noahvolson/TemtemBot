@@ -132,7 +132,7 @@ path = astar(mapData, (17,74), (29,13)) # NOTE THIS IS IN FORM: (y,x)
 #printArray(path)
 
 #DISPLAY PATH
-img = Image.open("Saipark.png")
+img = Image.open("assets/Saipark.png")
 draw = ImageDraw.Draw(img)
 for tile in path:
     xCoord = tile[1] * 10

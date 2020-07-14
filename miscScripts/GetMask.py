@@ -32,7 +32,7 @@ def imgToWalkable(img, val):
     return walkable
 
 
-frame = cv2.imread('Saipark.png')
+frame = cv2.imread('../assets/Saipark.png')
 hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
 l_b1 = np.array([0, 0, 0])
