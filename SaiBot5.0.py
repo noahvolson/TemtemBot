@@ -2,6 +2,7 @@ from SaiBotInterface import Ui_MainWindow
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
+from collections import deque
 from MapProcessor import *
 from Astar import *
 
@@ -17,7 +18,8 @@ class Map(qtw.QGraphicsScene):
             self.mapData = initWalkable()
             np.savetxt('mapData.csv', mapData, delimiter=',')
         
-        self.selected = []
+        self.__selected = deque()
+        self.__undone = deque()
         self.walkToggle = False
         self.grassToggle = False
         
@@ -29,8 +31,9 @@ class Map(qtw.QGraphicsScene):
         x = (event.scenePos().x() // 10) * 10
         y = (event.scenePos().y() // 10) * 10
 
-        self.selected.append((x, y))
+        self.__selected.append((x, y))
         self.addRect(x,y,10,10,yellowPen)
+        self.__undone = [] # upon making a change, undone cache is cleared
 
     def update(self):
         self.clear()
@@ -41,6 +44,16 @@ class Map(qtw.QGraphicsScene):
 
         self.__drawSelected()
         super().update()
+
+    def undo(self):
+        if not self.__selected:
+            return
+        self.__undone.append(self.__selected.pop())
+
+    def redo(self):
+        if not self.__undone:
+            return
+        self.__selected.append(self.__undone.pop())
         
 
     def __drawSelected(self):
@@ -48,7 +61,7 @@ class Map(qtw.QGraphicsScene):
         yellowPen = qtg.QPen(qtc.Qt.yellow)
         yellowPen.setWidth(1)
         
-        for point in self.selected:
+        for point in self.__selected:
             self.addRect(point[0],point[1],10,10,yellowPen)
 
     def __drawWalkable(self):
@@ -97,9 +110,13 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         self.mapView.setScene(self.map)
 
     def undoClicked(self):
+        self.map.undo()
+        self.map.update()
         print("UNDO Clicked")
 
     def redoClicked(self):
+        self.map.redo()
+        self.map.update()
         print("REDO Clicked")
 
     def walkClicked(self):
