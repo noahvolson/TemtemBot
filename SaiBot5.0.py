@@ -25,15 +25,23 @@ class Map(qtw.QGraphicsScene):
         
     def mousePressEvent(self, event):
 
-        yellowPen = qtg.QPen(qtc.Qt.yellow)
-        yellowPen.setWidth(1)
+        dataX = int(event.scenePos().x() // 10)
+        dataY = int(event.scenePos().y() // 10)
 
-        x = (event.scenePos().x() // 10) * 10
-        y = (event.scenePos().y() // 10) * 10
+        if self.mapData[dataY][dataX] == 0:
+            print("Invalid Selection")
+            return
+
+        x = dataX * 10
+        y = dataY * 10
 
         self.__selected.append((x, y))
+
+        yellowPen = qtg.QPen(qtc.Qt.yellow)
+        yellowPen.setWidth(1)
         self.addRect(x,y,10,10,yellowPen)
         self.__undone = [] # upon making a change, undone cache is cleared
+        self.__drawPath()
 
     def update(self):
         self.clear()
@@ -43,6 +51,7 @@ class Map(qtw.QGraphicsScene):
             self.__drawEncounters()
 
         self.__drawSelected()
+        self.__drawPath()
         super().update()
 
     def undo(self):
@@ -63,6 +72,21 @@ class Map(qtw.QGraphicsScene):
         
         for point in self.__selected:
             self.addRect(point[0],point[1],10,10,yellowPen)
+
+    def __drawPath(self):
+        yellowPen = qtg.QPen(qtc.Qt.yellow)
+        yellowPen.setWidth(1)
+        
+        for i in range(len(self.__selected)):
+            if (i+1) >= len(self.__selected):
+                return
+            start = ((self.__selected[i][1] // 10), (self.__selected[i][0] // 10))
+            end = ((self.__selected[i+1][1] // 10), (self.__selected[i+1][0] // 10))
+            path = astar(self.mapData, start, end)
+
+            for point in path:
+                self.addRect(point[1] * 10,point[0] * 10,10,10,yellowPen)
+                
 
     def __drawWalkable(self):
         grayPen = qtg.QPen(qtc.Qt.gray)
@@ -112,20 +136,16 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
     def undoClicked(self):
         self.map.undo()
         self.map.update()
-        print("UNDO Clicked")
 
     def redoClicked(self):
         self.map.redo()
         self.map.update()
-        print("REDO Clicked")
 
     def walkClicked(self):
-        print("WALK Clicked")
         self.map.walkToggle = not self.map.walkToggle
         self.map.update()
 
     def grassClicked(self):
-        print("GRASS Clicked")
         self.map.grassToggle = not self.map.grassToggle
         self.map.update()
 

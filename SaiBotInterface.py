@@ -37,7 +37,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.mapView.sizePolicy().hasHeightForWidth())
         self.mapView.setSizePolicy(sizePolicy)
         self.mapView.setAutoFillBackground(False)
-        self.mapView.setStyleSheet("background-image: url(\"assets/Saipark-display.png\")")
+        self.mapView.setStyleSheet("background-image: url(\"assets/Saipark.png\")")
         self.mapView.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.mapView.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.mapView.setSceneRect(QtCore.QRectF(0.0, 0.0, 871.0, 831.0))
