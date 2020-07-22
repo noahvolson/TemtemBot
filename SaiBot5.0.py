@@ -19,7 +19,9 @@ class Map(qtw.QGraphicsScene):
             np.savetxt('mapData.csv', mapData, delimiter=',')
         
         self.__selected = deque()
+        self.__allPaths = deque()
         self.__undone = deque()
+        self.__undonePaths = deque()
         self.walkToggle = False
         self.grassToggle = False
         
@@ -36,12 +38,10 @@ class Map(qtw.QGraphicsScene):
         y = dataY * 10
 
         self.__selected.append((x, y))
-
-        yellowPen = qtg.QPen(qtc.Qt.yellow)
-        yellowPen.setWidth(1)
-        self.addRect(x,y,10,10,yellowPen)
-        self.__undone = [] # upon making a change, undone cache is cleared
-        self.__drawPath()
+        self.__addPath()
+        self.__undone = deque() # upon making a change, undone cache is cleared
+        self.__undonePaths = deque()
+        self.update()
 
     def update(self):
         self.clear()
@@ -49,41 +49,54 @@ class Map(qtw.QGraphicsScene):
             self.__drawWalkable()
         if (self.grassToggle):
             self.__drawEncounters()
-
+            
+        self.__drawAllPaths()
         self.__drawSelected()
-        self.__drawPath()
-        super().update()
 
     def undo(self):
         if not self.__selected:
             return
         self.__undone.append(self.__selected.pop())
 
+        if not self.__allPaths:
+            return
+        self.__undonePaths.append(self.__allPaths.pop())
+
     def redo(self):
         if not self.__undone:
             return
         self.__selected.append(self.__undone.pop())
+
+        if not self.__undonePaths:
+            return
+        self.__allPaths.append(self.__undonePaths.pop())
         
 
     def __drawSelected(self):
 
-        yellowPen = qtg.QPen(qtc.Qt.yellow)
-        yellowPen.setWidth(1)
+        orangePen = qtg.QPen(qtg.QColor(255,165,0))
+        orangePen.setWidth(2)
         
         for point in self.__selected:
-            self.addRect(point[0],point[1],10,10,yellowPen)
+            self.addRect(point[0],point[1],10,10,orangePen)
 
-    def __drawPath(self):
+    def __addPath(self):
+        if len(self.__selected) <= 1:
+            return
+
+        # start is end of deque (most recently added)
+        start = ((self.__selected[-1][1] // 10), (self.__selected[-1][0] // 10))
+        end = ((self.__selected[-2][1] // 10), (self.__selected[-2][0] // 10))
+
+        self.__allPaths.append(astar(self.mapData, start, end))
+        #print(self.__allPaths)
+
+    def __drawAllPaths(self):
+
         yellowPen = qtg.QPen(qtc.Qt.yellow)
         yellowPen.setWidth(1)
-        
-        for i in range(len(self.__selected)):
-            if (i+1) >= len(self.__selected):
-                return
-            start = ((self.__selected[i][1] // 10), (self.__selected[i][0] // 10))
-            end = ((self.__selected[i+1][1] // 10), (self.__selected[i+1][0] // 10))
-            path = astar(self.mapData, start, end)
 
+        for path in self.__allPaths:
             for point in path:
                 self.addRect(point[1] * 10,point[0] * 10,10,10,yellowPen)
                 
